@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Pesquisar CEP - CEP Brasil
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+
+    <h1>
+        Pesquisa de Endereços
+    </h1>
+
+
+    <!-- PESQUISA -->
+
+    <div class="pesquisa-container">
+
+        <form method="get">
+
+            <label for="q">
+                Pesquisar:
+            </label>
+
+            <input
+                type="text"
+                name="q"
+                id="q"
+                value="{{ termo }}"
+                placeholder="CEP, rua, bairro ou cidade..."
+                autocomplete="off"
+            >
+
+            <button type="submit">
+                Pesquisar
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- RESULTADOS -->
+
+    {% if termo %}
+
+        <div class="resultados-container">
+
+            <h2>
+                Resultados da pesquisa
+            </h2>
+
+            <p>
+                {{ total_resultados }} resultado(s) encontrado(s).
+            </p>
+
+
+            {% if total_resultados > 0 %}
+
+                <div class="tabela-scroll">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    UF
+                                </th>
+
+                                <th>
+                                    Cidade
+                                </th>
+
+                                <th>
+                                    Bairro
+                                </th>
+
+                                <th>
+                                    Logradouro
+                                </th>
+
+                                <th>
+                                    CEP
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for endereco in pagina_obj %}
+
+                                <tr>
+
+                                    <td>
+                                        {{ endereco.uf }}
+                                    </td>
+
+                                    <td>
+                                        {{ endereco.cidade }}
+                                    </td>
+
+                                    <td>
+
+                                        {% if endereco.bairro %}
+
+                                            {{ endereco.bairro }}
+
+                                        {% else %}
+
+                                            Sem bairro informado
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <td>
+
+                                        {% if endereco.logradouro %}
+
+                                            {{ endereco.logradouro }}
+
+                                        {% else %}
+
+                                            Sem logradouro informado
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <td>
+                                        {{ endereco.cep }}
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- PAGINAÇÃO -->
+
+                {% if pagina_obj.has_other_pages %}
+
+                    <div class="paginacao">
+
+                        {% if pagina_obj.has_previous %}
+
+                            <a
+                                href="?q={{ termo|urlencode }}&page={{ pagina_obj.previous_page_number }}"
+                            >
+                                Anterior
+                            </a>
+
+                        {% endif %}
+
+
+                        <span>
+
+                            Página
+                            {{ pagina_obj.number }}
+                            de
+                            {{ pagina_obj.paginator.num_pages }}
+
+                        </span>
+
+
+                        {% if pagina_obj.has_next %}
+
+                            <a
+                                href="?q={{ termo|urlencode }}&page={{ pagina_obj.next_page_number }}"
+                            >
+                                Próxima
+
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                {% endif %}
+
+
+            {% else %}
+
+                <div class="sem-resultados">
+
+                    <p>
+                        Nenhum endereço encontrado para:
+                        <strong>{{ termo }}</strong>
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    {% else %}
+
+        <div class="resultados-container">
+
+            <h2>
+                Pesquise um endereço
+            </h2>
+
+            <p>
+                Você pode pesquisar por CEP, logradouro,
+                bairro ou cidade.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

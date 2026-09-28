@@ -1,0 +1,91 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Marcos Brasil{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    {% block extra_css %}{% endblock %}
+
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-logo">
+                Estatistica de CEP
+            </div>
+
+            <nav class="sidebar-menu">
+
+                <a
+                    href="{% url 'estados' %}"
+                    class="menu-item {% if pagina_atual == 'estados' %}active{% endif %}"
+                >
+                    Estados
+                </a>
+
+                <a
+                    href="{% url 'cidades' %}"
+                    class="menu-item {% if pagina_atual == 'cidades' %}active{% endif %}"
+                >
+                    Cidades
+                </a>
+
+                <a
+                    href="{% url 'bairros' %}"
+                    class="menu-item {% if pagina_atual == 'bairros' %}active{% endif %}"
+                >
+                    Bairros e Logradouros
+                </a>
+
+                <a
+                    href="{% url 'pesquisa' %}"
+                    class="menu-item {% if pagina_atual == 'pesquisa' %}active{% endif %}"
+                >
+                    Pesquisar Endereço
+                </a>
+
+                <a
+                    href="{% url 'admin:index' %}"
+                    class="menu-item"
+                >
+                    Administração
+                </a>
+
+            </nav>
+
+        </aside>
+
+
+        <!-- CONTEÚDO -->
+
+        <main class="content">
+
+            {% block content %}
+            {% endblock %}
+
+        </main>
+
+    </div>
+
+
+    {% block extra_js %}
+    {% endblock %}
+
+</body>
+
+</html>
